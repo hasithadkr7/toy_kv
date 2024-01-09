@@ -3,8 +3,7 @@
 -behaviour(supervisor).
 
 %% API
--export([start_link/0]).
-
+-export([start_link/0, start_link/1]).
 %% Supervisor callbacks
 -export([init/1]).
 
@@ -14,7 +13,11 @@
 
 -spec start_link() -> supervisor:startlink_ret().
 start_link() ->
-  supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+
+-spec start_link(atom()) -> supervisor:startlink_ret().
+start_link(Mode) ->
+    supervisor:start_link({local, ?MODULE}, ?MODULE, [Mode]).
 
 %%%===================================================================
 %%% Supervisor callbacks
@@ -22,10 +25,10 @@ start_link() ->
 
 %% @hidden
 init([]) ->
-  Buckets = application:get_env(toy_kv, buckets, default_buckets()),
-  Fun = fun({Name, Options}) -> child(Name, Options) end,
-  Children = lists:map(Fun, Buckets),
-  {ok, {{one_for_one, 5, 10}, Children}}.
+    Buckets = toy_kv:get_buckets(),
+    Fun = fun({Name, Options}) -> child(Name, Options) end,
+    Children = lists:map(Fun, Buckets),
+    {ok, {{one_for_one, 5, 10}, Children}}.
 
 %%%===================================================================
 %%% Internal functions
@@ -33,15 +36,4 @@ init([]) ->
 
 %% @private
 child(Name, Options) ->
-  {
-   Name,
-   {toy_kv, start_link, [Name, Options]},
-   permanent,
-   5000,
-   worker,
-   [toy_kv]
-  }.
-
-%% @private
-default_buckets() ->
-  [{default, [{copies, ram_copies}]}].
+    {Name, {toy_kv, start_link, [Name, Options]}, permanent, 5000, worker, [toy_kv]}.

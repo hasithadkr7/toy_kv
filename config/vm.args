@@ -1,0 +1,2 @@
+ERL_AFLAGS="-enable-feature all"
+-config config/sys.config

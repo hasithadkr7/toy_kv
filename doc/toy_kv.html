@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Module toy_kv</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module toy_kv</h1>
+<ul class="index"><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>
+
+<p><b>Behaviours:</b> <a href="gen_server.html"><code>gen_server</code></a>.</p>
+
+<h2><a name="types">Data Types</a></h2>
+
+<h3 class="typedecl"><a name="type-bucket">bucket()</a></h3>
+<p><code>bucket() = atom()</code></p>
+
+
+<h3 class="typedecl"><a name="type-key">key()</a></h3>
+<p><code>key() = term()</code></p>
+
+
+<h3 class="typedecl"><a name="type-kv_opt">kv_opt()</a></h3>
+<p><code>kv_opt() = {replicas, <a href="#type-replicas">replicas()</a>}</code></p>
+
+
+<h3 class="typedecl"><a name="type-kv_opts">kv_opts()</a></h3>
+<p><code>kv_opts() = [<a href="#type-kv_opt">kv_opt()</a>]</code></p>
+
+
+<h3 class="typedecl"><a name="type-option">option()</a></h3>
+<p><code>option() = {copies, ram_copies | disc_copies} | {dist_erl_nodes, boolean()} | {auto_eject_nodes, boolean()}</code></p>
+
+
+<h3 class="typedecl"><a name="type-options">options()</a></h3>
+<p><code>options() = [<a href="#type-option">option()</a>]</code></p>
+
+
+<h3 class="typedecl"><a name="type-replicas">replicas()</a></h3>
+<p><code>replicas() = pos_integer()</code></p>
+
+
+<h3 class="typedecl"><a name="type-state">state()</a></h3>
+<p><code>state() = #state{bucket = <a href="#type-bucket">bucket()</a>, copies = ram_copies | disc_copies, dist_erl_nodes = boolean(), auto_eject_nodes = boolean(), nodes = [node()]}</code></p>
+
+
+<h3 class="typedecl"><a name="type-value">value()</a></h3>
+<p><code>value() = term()</code></p>
+
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#del-2">del/2</a></td><td>Equivalent to <a href="#del-3"><code>del(Bucket, Key, [])</code></a>.
+</td></tr>
+<tr><td valign="top"><a href="#del-3">del/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#get-2">get/2</a></td><td>Equivalent to <a href="#get-3"><code>get(Bucket, Key, [])</code></a>.
+</td></tr>
+<tr><td valign="top"><a href="#get-3">get/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#get_buckets-0">get_buckets/0</a></td><td></td></tr>
+<tr><td valign="top"><a href="#get_nodes-1">get_nodes/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#get_state-1">get_state/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#join-2">join/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#leave-2">leave/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#preflist-2">preflist/2</a></td><td>Equivalent to <a href="#preflist-3"><code>preflist(Key, N, [node() | nodes()])</code></a>.
+</td></tr>
+<tr><td valign="top"><a href="#preflist-3">preflist/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#set-3">set/3</a></td><td>Equivalent to <a href="#set-4"><code>set(Bucket, Key, Value, [])</code></a>.
+</td></tr>
+<tr><td valign="top"><a href="#set-4">set/4</a></td><td></td></tr>
+<tr><td valign="top"><a href="#start-0">start/0</a></td><td></td></tr>
+<tr><td valign="top"><a href="#start_link-2">start_link/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#stop-0">stop/0</a></td><td></td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="del-2">del/2</a></h3>
+<div class="spec">
+<p><code>del(Bucket, Key) -&gt; any()</code></p>
+<p> </p>
+</div><p>Equivalent to <a href="#del-3"><code>del(Bucket, Key, [])</code></a>.</p>
+
+
+<h3 class="function"><a name="del-3">del/3</a></h3>
+<div class="spec">
+<p><code>del(Bucket::<a href="#type-bucket">bucket()</a>, Key::<a href="#type-key">key()</a>, Opts::<a href="#type-kv_opts">kv_opts()</a>) -&gt; ok | {error, atom()}</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="get-2">get/2</a></h3>
+<div class="spec">
+<p><code>get(Bucket, Key) -&gt; any()</code></p>
+<p> </p>
+</div><p>Equivalent to <a href="#get-3"><code>get(Bucket, Key, [])</code></a>.</p>
+
+
+<h3 class="function"><a name="get-3">get/3</a></h3>
+<div class="spec">
+<p><code>get(Bucket::<a href="#type-bucket">bucket()</a>, Key::<a href="#type-key">key()</a>, Opts::<a href="#type-kv_opts">kv_opts()</a>) -&gt; {ok, <a href="#type-value">value()</a>} | {error, atom()}</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="get_buckets-0">get_buckets/0</a></h3>
+<div class="spec">
+<p><code>get_buckets() -&gt; any()</code></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="get_nodes-1">get_nodes/1</a></h3>
+<div class="spec">
+<p><code>get_nodes(Bucket::<a href="#type-bucket">bucket()</a>) -&gt; [node()]</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="get_state-1">get_state/1</a></h3>
+<div class="spec">
+<p><code>get_state(Bucket::<a href="#type-bucket">bucket()</a>) -&gt; <a href="#type-state">state()</a></code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="join-2">join/2</a></h3>
+<div class="spec">
+<p><code>join(Bucket::<a href="#type-bucket">bucket()</a>, Nodes::[node()]) -&gt; ok | invalid_node</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="leave-2">leave/2</a></h3>
+<div class="spec">
+<p><code>leave(Bucket::<a href="#type-bucket">bucket()</a>, Nodes::[node()]) -&gt; ok</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="preflist-2">preflist/2</a></h3>
+<div class="spec">
+<p><code>preflist(Key, N) -&gt; any()</code></p>
+<p> </p>
+</div><p>Equivalent to <a href="#preflist-3"><code>preflist(Key, N, [node() | nodes()])</code></a>.</p>
+
+
+<h3 class="function"><a name="preflist-3">preflist/3</a></h3>
+<div class="spec">
+<p><code>preflist(Key::<a href="#type-key">key()</a>, N::<a href="#type-replicas">replicas()</a>, Nodes::[node()]) -&gt; [node()]</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="set-3">set/3</a></h3>
+<div class="spec">
+<p><code>set(Bucket, Key, Value) -&gt; any()</code></p>
+<p> </p>
+</div><p>Equivalent to <a href="#set-4"><code>set(Bucket, Key, Value, [])</code></a>.</p>
+
+
+<h3 class="function"><a name="set-4">set/4</a></h3>
+<div class="spec">
+<p><code>set(Bucket::<a href="#type-bucket">bucket()</a>, Key::<a href="#type-key">key()</a>, Value::<a href="#type-value">value()</a>, Opts::<a href="#type-kv_opts">kv_opts()</a>) -&gt; ok | {error, atom()}</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="start-0">start/0</a></h3>
+<div class="spec">
+<p><code>start() -&gt; {ok, term()} | {error, term()}</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="start_link-2">start_link/2</a></h3>
+<div class="spec">
+<p><code>start_link(Name::atom(), Options::<a href="#type-options">options()</a>) -&gt; <a href="/home/hasitha/workspace/stdlib/doc/gen_server.html#type-start_ret">gen_server:start_ret()</a></code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="stop-0">stop/0</a></h3>
+<div class="spec">
+<p><code>stop() -&gt; ok</code><br></p>
+<p> </p>
+</div>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc</i></p>
+</body>
+</html>

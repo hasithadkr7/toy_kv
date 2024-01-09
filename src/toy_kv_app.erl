@@ -11,13 +11,13 @@
 
 %% @hidden
 start(_StartType, _StartArgs) ->
-  init_mnesia(),
-  toy_kv_sup:start_link().
+    init_mnesia(),
+    toy_kv_sup:start_link().
 
 %% @hidden
 -spec stop(term()) -> _.
 stop(_State) ->
-  ok.
+    ok.
 
 %%%===================================================================
 %%% Internal functions
@@ -25,7 +25,7 @@ stop(_State) ->
 
 %% @private
 init_mnesia() ->
-  mnesia:stop(),
-  mnesia:create_schema([node()]),
-  mnesia:start(),
-  ok.
+    _ = mnesia:stop(),
+    _ = mnesia:create_schema([node()]),
+    ok = mnesia:start(),
+    ok.
