@@ -29,17 +29,6 @@ end_per_suite(Config) ->
 %%==============================================================================
 %% Exported Test functions
 %%==============================================================================
-%%%% @private
-%%start_primary_node() ->
-%%    _ = net_kernel:start([?PRIMARY]),
-%%    ok.
-%%
-%%%% @private
-%%allow_boot() ->
-%%    _ = erl_boot_server:start([]),
-%%    {ok, IPv4} = inet:parse_ipv4_address("127.0.0.1"),
-%%    erl_boot_server:add_slave(IPv4).
-
 t_kv_basic_ops(_Config) ->
     %% Set
     ok = toy_kv:set(db1, k1, v1),
@@ -151,26 +140,45 @@ start_slaves([Node | T], Acc) ->
 
 %% @private
 spawn_node(NodeName) ->
-    Cookie = atom_to_list(erlang:get_cookie()),
-    InetLoaderArgs =
-        "-loader inet -hosts 127.0.0.1
-        -config ../../config/sys.config
-        -setcookie "
-        ++ Cookie,
-    {ok, _Pid, Node} = start_node(NodeName, InetLoaderArgs),
+    {ok, _Pid, Node} = start_node(NodeName),
     pong = net_adm:ping(Node),
-    ct:log("Slave started as ~p~n", [Node]),
-    ok = rpc:block_call(Node, code, add_paths, [code:get_path()]),
+    ok = rpc:call(Node, application, set_env, [toy_kv, mode, distributed]),
+    ok =
+        rpc:call(Node,
+                 application,
+                 set_env,
+                 [toy_kv,
+                  local,
+                  {buckets,
+                   [{b1, [{copies, disc_copies}]}, {b2, [{copies, ram_copies}]}],
+                   {replicas, 1}}]),
+    ok =
+        rpc:call(Node,
+                 application,
+                 set_env,
+                 [toy_kv,
+                  distributed,
+                  {buckets,
+                   [{db1, [{copies, ram_copies}]},
+                    {db2,
+                     [{copies, ram_copies}, {dist_erl_nodes, false}, {auto_eject_nodes, true}]}],
+                   {replicas, 3}}]),
     {ok, _} = rpc:block_call(Node, application, ensure_all_started, [toy_kv]),
+    ct:log("Slave started as ~p ~n", [Node]),
     Node.
 
 %% @private
-start_node(NodeName, InetLoaderArgs) ->
-    peer:start(#{name => node_name(NodeName),
-                 host => "127.0.0.1",
-                 args => [InetLoaderArgs]}).
+start_node(Node) ->
+    peer:start(#{name => node_name(Node),
+                 host => node_host(Node),
+                 args => ["-pa" | code:get_path()]}).
 
 %% @private
 node_name(Node) ->
     [Name, _] = binary:split(atom_to_binary(Node, utf8), <<"@">>),
     binary_to_atom(Name, utf8).
+
+%% @private
+node_host(Node) ->
+    [_, Host] = binary:split(atom_to_binary(Node, utf8), <<"@">>),
+    binary_to_list(Host).
