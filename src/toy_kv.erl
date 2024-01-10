@@ -76,12 +76,8 @@ del(Bucket, Key, Opts) ->
     call(Bucket, Key, Opts, {del, Key}).
 
 get_buckets() ->
-    io:format("toy_kv|get_buckets|all env:~p~n", [application:get_all_env(toy_kv)]),
-    io:format("toy_kv|get_buckets|env:~p~n", [application:get_env(toy_kv, mode)]),
     {ok, Mode} = application:get_env(toy_kv, mode),
-    io:format("toy_kv|get_buckets|Mode:~p~n", [Mode]),
     {ok, {buckets, Buckets, _}} = application:get_env(toy_kv, Mode),
-    io:format("toy_kv|get_buckets|Buckets:~p~n", [Buckets]),
     Buckets.
 
 %%%===================================================================
